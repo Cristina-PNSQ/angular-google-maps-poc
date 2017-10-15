@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
@@ -15,7 +15,8 @@ import { AgmCoreModule } from '@agm/core';
     FormsModule,
     HttpModule,
     AgmCoreModule.forRoot({
-      apiKey: 'YOUR_KEY'
+      apiKey: 'AIzaSyBCh__N9QqVlqlYpfO6w_tKMT59G0ao964',
+      clientId: 'Cristina Test'
     })
   ],
   providers: [],

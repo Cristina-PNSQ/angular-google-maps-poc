@@ -2,6 +2,8 @@
   {{title}}
 </h1>
 
-<agm-map [latitude]="lat" [longitude]="lng">
-  <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+<agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
+  <!--<agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>-->
+  <agm-polygon [paths]="paths" fillOpacity='0.07' fillColor='red' strokeColor='red' strokeOpacity='0.5' strokeWeight='1'>
+     </agm-polygon>
 </agm-map>
