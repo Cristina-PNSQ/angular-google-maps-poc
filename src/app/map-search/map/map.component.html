@@ -1,0 +1,53 @@
+<suburb-search  (onSelected)="onSuburbSelected($event)"></suburb-search>
+<div *ngIf="selectedSuburb">
+  <agm-map [latitude]="selectedSuburb.lat" [longitude]="selectedSuburb.lng" [zoom]="zoom" [scrollwheel]="true" (click)="markerClick($event, infoWindow)" #gm>
+   
+    <agm-marker [latitude] = -33.8379982 [longitude] = 151.2055194></agm-marker> 
+    <agm-polygon [paths]="paths" fillOpacity='0.07' fillColor='red' strokeColor='red' strokeOpacity='0.5' strokeWeight='1'>
+    </agm-polygon>
+
+      <agm-data-layer [geoJson]="geoJsonObject"  [style]="styleFunc" (layerClick)="markerClick($event, infoWindow)">
+        <agm-info-window [disableAutoPan]="true" 
+        [latitude]="infoWindowLat" 
+        [longitude] = "infoWindowLong" 
+        [isOpen]="infoWindowIsOpen"
+         #infoWindow>
+         <div> bla bla blaaaaaaaaaaaaaaaæaaaaaaaaaaaaa
+           aaaaaaa
+           a
+           aaaaaaa
+
+           aaaa
+         </div>
+         <div> bla blaaaaaaaaaaaaaaaæaaaaaaaaaaaaa
+          aaaaaaa
+          a
+          aaaaaaa
+
+          aaaa
+        </div>
+          <p>
+        {{infoWindowText}}
+        </p>
+        </agm-info-window>
+      </agm-data-layer>
+  </agm-map>
+</div>
+ 
+    <!--<agm-snazzy-info-window [isOpen]="infoWindowIsOpen" 
+                              [latitude]="infoWindowLat" 
+                              [longitude]="infoWindowLong"
+                              [closeWhenOthersOpen]="true" 
+                              [closeOnMapClick]="true"  
+                              [showCloseButton]="false"  
+                              [openOnMarkerClick]="true"
+                              [backgroundColor]="'#FFF'"  
+                              #infoWindow>
+          <ng-template>
+            {{infoWindowText}}
+          </ng-template>
+      </agm-snazzy-info-window>
+      </agm-data-layer>
+    </agm-map>
+  </div>
+-->

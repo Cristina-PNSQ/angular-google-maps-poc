@@ -1,0 +1,8 @@
+
+<div class="form-group">
+  <select class="form-control" id="suburbSelection"
+  [(ngModel)]="selectedSuburb" name="suburbs" (ngModelChange)="onChange($event)">
+  <option *ngFor="let s of suburbs" [ngValue]="s">{{s.name}}, {{s.state}}, {{s.postalCode}}</option>
+</select>
+
+</div>

@@ -4,7 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
-import { AgmCoreModule } from '@agm/core';
+//import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+import {MapSearchModule} from './map-search/map-search.module';
+import {SharedModule} from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -14,10 +16,8 @@ import { AgmCoreModule } from '@agm/core';
     BrowserModule,
     FormsModule,
     HttpModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyBCh__N9QqVlqlYpfO6w_tKMT59G0ao964',
-      clientId: 'Cristina Test'
-    })
+    SharedModule,
+    MapSearchModule
   ],
   providers: [],
   bootstrap: [AppComponent]
