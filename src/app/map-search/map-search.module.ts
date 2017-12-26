@@ -14,7 +14,7 @@ import {SuburbsService} from '../shared/services/suburbs.service';
 export class GoogleMapsConfig {
   apiKey: string;
   constructor() {
-    this.apiKey = ''
+    this.apiKey = 'AIzaSyBCh__N9QqVlqlYpfO6w_tKMT59G0ao964';
   }
 }
 
@@ -22,7 +22,9 @@ export class GoogleMapsConfig {
   imports: [
     CommonModule,
     FormsModule,
-    AgmCoreModule.forRoot(),
+    AgmCoreModule.forRoot({
+      libraries: ["places"]
+    }),
     AgmSnazzyInfoWindowModule
   ],
   declarations: [

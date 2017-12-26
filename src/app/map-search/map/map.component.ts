@@ -1,4 +1,4 @@
-import { Component, OnInit , ViewChildren} from '@angular/core';
+import { Component, OnInit , ViewChildren, NgZone} from '@angular/core';
 import { LatLng, LatLngLiteral, PolyMouseEvent , AgmMarker , AgmInfoWindow} from '@agm/core';
 import { PolygonManager} from '@agm/core';
 
@@ -15,6 +15,9 @@ export class MapComponent implements OnInit {
   zoom: number = 14;
   suburbs: Suburb[];
   selectedSuburb : Suburb;
+
+  latitude :number;
+  longitude :number;
   marker: AgmMarker;
 
   infoWindowLat:number;
@@ -23,14 +26,26 @@ export class MapComponent implements OnInit {
   infoWindowText:string;
 
   @ViewChildren("infoWindow") map;
-  constructor(private suburbsService: SuburbsService) { 
+
+
+  constructor(private suburbsService: SuburbsService, 
+    private ngZone: NgZone) { 
   }
 
   ngOnInit() {
+   
+  }
+
+  mapReady($event)
+  {
+    console.log('map ready');
   }
 
   onSuburbSelected(suburb){
     this.selectedSuburb = suburb;
+    this.latitude = suburb.lat;
+    this.longitude = suburb.lng;
+
     if(this.map!=null && this.map.lastOpen != null) 
     {
       this.map.lastOpen.close();
@@ -55,6 +70,8 @@ export class MapComponent implements OnInit {
         icon: feature.getProperty('icon')
      });
     }
+
+    
 
     geoJsonObject: Object = {
       "type": "FeatureCollection",
@@ -121,6 +138,23 @@ export class MapComponent implements OnInit {
               "url": 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=F|ADDE63'
               },
               "description":"description 4"
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [  
+              151.2112436,
+              -33.8003322
+            ]
+          },
+          "properties": {          
+            "id":"4",
+            "icon":{
+              "url": 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=F|ADDE63'
+              },
+              "description":"description Onicaaaaaaa"
           }
         }
       ]

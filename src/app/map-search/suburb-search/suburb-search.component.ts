@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, NgZone} from '@angular/core';
 import { Suburb } from '../../shared/models/suburb';
 import { SuburbsService } from '../../shared/services/suburbs.service';
 
@@ -13,17 +13,34 @@ export class SuburbSearchComponent implements OnInit {
   selectedSuburb : Suburb;
   @Output() onSelected = new EventEmitter<Suburb>();
 
-  constructor(private suburbsService: SuburbsService) { 
+  constructor(private suburbsService: SuburbsService, 
+    private ngZone: NgZone) { 
     this.suburbs = suburbsService.getSuburbs();
     this.selectedSuburb = this.suburbs[0];
   }
 
   ngOnInit() {
-    this.onSelected.emit(this.selectedSuburb);
+    //this.onSelected.emit(this.selectedSuburb);
+    this.setCurrentPosition();
   }
   
   onChange(suburb){
     this.onSelected.emit(suburb);
   }
 
+  private setCurrentPosition() {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.selectedSuburb = {name:'geolocation', 
+                              state:'geolocation',
+                              lat:position.coords.latitude, 
+                              lng: position.coords.longitude,
+                              postalCode:'geolocation'}; 
+      this.onSelected.emit(this.selectedSuburb);
+      });
+    }
+    
+    this.onSelected.emit(this.selectedSuburb);
+    
+  }
 }
