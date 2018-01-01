@@ -23,6 +23,7 @@ export class GoogleMapsConfig {
     CommonModule,
     FormsModule,
     AgmCoreModule.forRoot({
+      apiKey: "AIzaSyBCh__N9QqVlqlYpfO6w_tKMT59G0ao964",
       libraries: ["places"]
     }),
     AgmSnazzyInfoWindowModule
@@ -32,7 +33,7 @@ export class GoogleMapsConfig {
      SuburbSearchComponent
     ],
    providers:[
-    {provide: LAZY_MAPS_API_CONFIG, useClass: GoogleMapsConfig},
+    //{provide: LAZY_MAPS_API_CONFIG, useClass: GoogleMapsConfig},
      SuburbsService],
   exports:
   [MapComponent, 

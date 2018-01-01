@@ -1,7 +1,7 @@
-import { Component, OnInit , ViewChildren, NgZone} from '@angular/core';
-import { LatLng, LatLngLiteral, PolyMouseEvent , AgmMarker , AgmInfoWindow} from '@agm/core';
-import { PolygonManager} from '@agm/core';
+import { Component, OnInit , ViewChildren, NgZone, ViewChild} from '@angular/core';
+import { LatLng, LatLngLiteral, PolyMouseEvent , AgmMarker , AgmInfoWindow, MapsAPILoader, PolygonManager} from '@agm/core';
 
+import { } from 'googlemaps';
 import { Suburb } from '../../shared/models/suburb';
 import { SuburbsService } from '../../shared/services/suburbs.service';
 
@@ -25,26 +25,44 @@ export class MapComponent implements OnInit {
   infoWindowIsOpen:boolean=false;
   infoWindowText:string;
 
-  @ViewChildren("infoWindow") map;
-
+  @ViewChild("gm") map;
+  @ViewChild("search") searchElementRef;
 
   constructor(private suburbsService: SuburbsService, 
-    private ngZone: NgZone) { 
+    private ngZone: NgZone,
+    private mapsAPILoader: MapsAPILoader,) { 
   }
 
   ngOnInit() {
-   
-  }
+    this.mapsAPILoader.load().then(() => {
+      let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
+        types: ['(cities)'],
+        componentRestrictions: {'country': 'au'},
+      });
 
-  mapReady($event)
-  {
-    console.log('map ready');
+    autocomplete.addListener("place_changed", () => {
+      this.ngZone.run(() => {
+        //get the place result
+        let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+
+        //verify result
+        if (place.geometry === undefined || place.geometry === null) {
+          return;
+        }
+
+        //set latitude, longitude and zoom
+        this.latitude = place.geometry.location.lat();
+        this.longitude = place.geometry.location.lng();
+        
+      });
+    });
+  });
   }
 
   onSuburbSelected(suburb){
     this.selectedSuburb = suburb;
-    this.latitude = suburb.lat;
-    this.longitude = suburb.lng;
+    this.latitude = suburb.latitude;
+    this.longitude = suburb.longitude;
 
     if(this.map!=null && this.map.lastOpen != null) 
     {
@@ -90,7 +108,7 @@ export class MapComponent implements OnInit {
             "icon":{
               url: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=F|ADDE63',
               },
-              "description":"description 1"
+              "description":"description Marian"
           }
         },
         {
@@ -105,7 +123,7 @@ export class MapComponent implements OnInit {
           "properties": {          
             "id":"2",
             "label": "L",
-            "description":"description 2"
+            "description":"description Pierdut "
           }
         },
         {
@@ -137,7 +155,7 @@ export class MapComponent implements OnInit {
             "icon":{
               "url": 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=F|ADDE63'
               },
-              "description":"description 4"
+              "description":"description Gasit"
           }
         },
         {

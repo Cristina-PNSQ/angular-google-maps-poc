@@ -1,7 +1,14 @@
 <suburb-search  (onSelected)="onSuburbSelected($event)"></suburb-search>
-<div><!--*ngIf="selectedSuburb"-->
+
+<div class="form-group">
+  <input placeholder="search for location" autocorrect="off"
+   autocapitalize="off" spellcheck="off" type="text" class="form-control" #search 
+   >
+</div>
+
+<div *ngIf="selectedSuburb">
   <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" 
-  [scrollwheel]="true" (mapReady)="c($event)" #gm>
+  [scrollwheel]="true" (mapReady)="mapReady($event)" #gm>
    
     <agm-marker [latitude] = -33.8379982 [longitude] = 151.2055194></agm-marker> 
     <agm-polygon [paths]="paths" fillOpacity='0.07' fillColor='red' strokeColor='red' strokeOpacity='0.5' strokeWeight='1'>

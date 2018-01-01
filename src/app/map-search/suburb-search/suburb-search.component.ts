@@ -33,14 +33,15 @@ export class SuburbSearchComponent implements OnInit {
       navigator.geolocation.getCurrentPosition((position) => {
         this.selectedSuburb = {name:'geolocation', 
                               state:'geolocation',
-                              lat:position.coords.latitude, 
-                              lng: position.coords.longitude,
-                              postalCode:'geolocation'}; 
+                              latitude: position.coords.latitude, 
+                              longitude: position.coords.longitude,
+                              postalCode:'geolocation',
+                              isGeolocation: true}; 
       this.onSelected.emit(this.selectedSuburb);
       });
     }
     
-    this.onSelected.emit(this.selectedSuburb);
+    //this.onSelected.emit(this.selectedSuburb);
     
   }
 }
