@@ -4,6 +4,7 @@ import { LatLng, LatLngLiteral, PolyMouseEvent , AgmMarker , AgmInfoWindow, Maps
 import { } from 'googlemaps';
 import { Suburb } from '../../shared/models/suburb';
 import { SuburbsService } from '../../shared/services/suburbs.service';
+import { MapGeoJsonService } from '../../shared/services/map-geo-json.service';
 
 @Component({
   selector: 'app-map',
@@ -25,15 +26,20 @@ export class MapComponent implements OnInit {
   infoWindowIsOpen:boolean=false;
   infoWindowText:string;
 
+  geoJsonObject: Object;
+
   @ViewChild("gm") map;
   @ViewChild("search") searchElementRef;
 
   constructor(private suburbsService: SuburbsService, 
+    private geoJsonService: MapGeoJsonService,
     private ngZone: NgZone,
     private mapsAPILoader: MapsAPILoader,) { 
   }
 
   ngOnInit() {
+    this.geoJsonService.getGeoJson().subscribe(geoJson => this.geoJsonObject = geoJson);
+    
     this.mapsAPILoader.load().then(() => {
       let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
         types: ['(cities)'],
@@ -53,7 +59,6 @@ export class MapComponent implements OnInit {
         //set latitude, longitude and zoom
         this.latitude = place.geometry.location.lat();
         this.longitude = place.geometry.location.lng();
-        
       });
     });
   });
@@ -89,95 +94,7 @@ export class MapComponent implements OnInit {
      });
     }
 
-    
-
-    geoJsonObject: Object = {
-      "type": "FeatureCollection",
-      "features": [
-        {
-          "type": "Feature",
-          "geometry": {
-            "type": "Point",
-            "coordinates": [  
-              151.2055194,
-              -33.8379982
-            ]
-          },
-          "properties": {          
-            "id":"1",
-            "icon":{
-              url: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=F|ADDE63',
-              },
-              "description":"description Marian"
-          }
-        },
-        {
-          "type": "Feature",
-          "geometry": {
-            "type": "Point",
-            "coordinates": [  
-              151.206498,
-              -33.8227708
-            ]
-          },
-          "properties": {          
-            "id":"2",
-            "label": "L",
-            "description":"description Pierdut "
-          }
-        },
-        {
-          "type": "Feature",
-          "geometry": {
-            "type": "Point",
-            "coordinates": [  
-              151.1768691,
-              -33.8278162
-            ]
-          },
-          "properties": {          
-            "id":"3",
-            "label": "L",
-            "description":"description 3"
-          }
-        },
-        {
-          "type": "Feature",
-          "geometry": {
-            "type": "Point",
-            "coordinates": [  
-              151.2095243,
-              -33.8111782
-            ]
-          },
-          "properties": {          
-            "id":"4",
-            "icon":{
-              "url": 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=F|ADDE63'
-              },
-              "description":"description Gasit"
-          }
-        },
-        {
-          "type": "Feature",
-          "geometry": {
-            "type": "Point",
-            "coordinates": [  
-              151.2112436,
-              -33.8003322
-            ]
-          },
-          "properties": {          
-            "id":"4",
-            "icon":{
-              "url": 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=F|ADDE63'
-              },
-              "description":"description Onicaaaaaaa"
-          }
-        }
-      ]
-    };
-
+  
   paths: Array<LatLngLiteral> = 
   [{"lat":-33.8436557,"lng":151.2107132},
   {"lat":-33.8431612,"lng":151.2103914},

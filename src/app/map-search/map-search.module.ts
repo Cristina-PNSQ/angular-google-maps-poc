@@ -9,6 +9,7 @@ import { LAZY_MAPS_API_CONFIG } from '@agm/core/services';
 import { MapComponent } from './map/map.component';
 import { SuburbSearchComponent } from './suburb-search/suburb-search.component';
 import {SuburbsService} from '../shared/services/suburbs.service';
+import { MapGeoJsonService } from 'app/shared/services/map-geo-json.service';
 
 @Injectable()
 export class GoogleMapsConfig {
@@ -34,9 +35,10 @@ export class GoogleMapsConfig {
     ],
    providers:[
     //{provide: LAZY_MAPS_API_CONFIG, useClass: GoogleMapsConfig},
-     SuburbsService],
+     SuburbsService,
+     MapGeoJsonService],
   exports:
   [MapComponent, 
-    SuburbSearchComponent]
+  SuburbSearchComponent]
 })
 export class MapSearchModule { }
