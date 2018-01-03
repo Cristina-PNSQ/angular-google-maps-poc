@@ -41,8 +41,5 @@ export class SuburbSearchComponent implements OnInit {
       this.onSelected.emit(this.selectedSuburb);
       });
     }
-    
-    //this.onSelected.emit(this.selectedSuburb);
-    
   }
 }

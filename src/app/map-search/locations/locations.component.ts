@@ -11,7 +11,7 @@ import { Suburb } from 'app/shared/models/suburb';
 })
 export class LocationsComponent implements OnInit {
 
-suburbLocation: Suburb;
+suburbLocation: Suburb = null;
 
 @ViewChild("searchLocation") searchElementRef;
 @Output() selectedLocation = new EventEmitter<Suburb>();
@@ -21,9 +21,11 @@ suburbLocation: Suburb;
     }
 
   ngOnInit() {
-    this.setCurrentPosition();
-
+  
     this.mapsAPILoader.load().then(() => {
+     
+      this.setCurrentPosition();
+
       let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
         types: ['(cities)'],
         componentRestrictions: {'country': 'au'},
@@ -40,36 +42,52 @@ suburbLocation: Suburb;
         }
 
         //set latitude, longitude and zoom
-        this.suburbLocation = {
-          latitude : place.geometry.location.lat(),
-          longitude : place.geometry.location.lng(),
-          name: place.address_components.find(c=>c.types[0] === "locality").long_name,
-          state: place.address_components.find(c=>c.types[0] === "administrative_area_level_1").short_name,
-          postalCode: place.address_components.find(c => c.types[0] === "postal_code").long_name,
-          country: place.address_components.find(c =>c.types[0]==="country").long_name,
-          isGeolocation:false
-      }
-       this.selectedLocation.emit(this.suburbLocation);
+        this.setSuburbLocation(place.address_components,  place.geometry.location.lat(), place.geometry.location.lng(), false);
+        this.selectedLocation.emit(this.suburbLocation);
       });
     });
   });
   }
 
   private setCurrentPosition() {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition((position) => {
 
-        this.suburbLocation = {name:'geolocation', 
-                              state:'geolocation',
-                              latitude: position.coords.latitude, 
-                              longitude: position.coords.longitude,
-                              postalCode:'geolocation',
-                              country:'Australia',
-                              isGeolocation: true}; 
+    if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition((position) => {
 
-      this.selectedLocation.emit(this.suburbLocation);
-      });
+          let geocoder = new google.maps.Geocoder();
+          let request = {
+            location:  new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
+          };   
+
+          geocoder.geocode(request, (results, status) => {  
+                            if (status == google.maps.GeocoderStatus.OK) {
+                              if (results[0] != null) {
+                                let address_components = results[0].address_components;      
+                                this.setSuburbLocation(address_components,  position.coords.latitude, position.coords.longitude, true);      
+                                this.selectedLocation.emit(this.suburbLocation);
+                                console.log('geolocation fired');
+                              } else {
+                                alert("No address available");
+                              }
+                            }
+            });
+        });
     }
-    //this.onSelected.emit(this.selectedSuburb);
+    else {
+      console.log('no geolocation')
+    }
+  }
+
+  private setSuburbLocation(address_components: any, latitude: number, longitude : number, isGeolocation: boolean)
+  {
+    this.suburbLocation = {
+                    name: address_components.find(c=>c.types[0] === "locality").long_name,
+                    state: address_components.find(c=>c.types[0] === "administrative_area_level_1").short_name,
+                    latitude:latitude,
+                    longitude: longitude,
+                    postalCode: address_components.find(c => c.types[0] === "postal_code").long_name,
+                    country:address_components.find(c =>c.types[0]==="country").long_name,
+                    isGeolocation: isGeolocation
+                 };       
   }
 }

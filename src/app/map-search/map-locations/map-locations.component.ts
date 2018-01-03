@@ -12,8 +12,13 @@ import { MapGeoJsonService } from 'app/shared/services/map-geo-json.service';
 export class MapLocationsComponent implements OnInit {
 
   zoom: number = 14;
-  selectedSuburb : Suburb;
+  selectedSuburb : Suburb = null;
   geoJsonObject: Object;
+
+  infoWindowLat:number;
+  infoWindowLong:number;
+  infoWindowIsOpen:boolean=false;
+  infoWindowText:string;
 
   @ViewChild("gm") map;
 
@@ -23,20 +28,47 @@ export class MapLocationsComponent implements OnInit {
 
   ngOnInit() {
     this.geoJsonService.getGeoJson().subscribe(geoJson => this.geoJsonObject = geoJson);
+
+     setTimeout(()=>{
+      if(this.selectedSuburb === null)
+    {
+      this.selectedSuburb = {
+                            name:'generic', 
+                            state:'NSW',
+                            latitude: -31.253218, 
+                            longitude: 146.921099,
+                            postalCode:'geolocation',
+                            country:'Australia',
+                            isGeolocation: true
+                          }; 
+      console.log('timeout fired');
+      this.zoom = 6;
+    }}, 0);
   }
 
   styleFunc(feature) {
     return ({
       clickable: true,
-      //label: feature.getProperty('label'),
+      label: feature.getProperty('label'),
       glyph: feature.getProperty('id') ,
       icon: feature.getProperty('icon')
    });
   }
 
+  markerClick(clickEvent, infoWindow) {
+    this.infoWindowText = clickEvent.feature.getProperty('description');
+    var position = clickEvent.feature.getGeometry();
+    this.infoWindowLat=position.b.lat();
+    this.infoWindowLong=position.b.lng();
+    this.infoWindowIsOpen=true;
+    infoWindow.open();
+    this.map.lastOpen=infoWindow;
+ }
+
   onSelectedLocation(suburb){
     this.selectedSuburb = suburb;
-    
+    this.zoom = 14;
+
     if(this.map!=null && this.map.lastOpen != null) 
     {
       this.map.lastOpen.close();
