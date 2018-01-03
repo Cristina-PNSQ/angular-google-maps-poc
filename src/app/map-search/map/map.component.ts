@@ -34,12 +34,12 @@ export class MapComponent implements OnInit {
   constructor(private suburbsService: SuburbsService, 
     private geoJsonService: MapGeoJsonService,
     private ngZone: NgZone,
-    private mapsAPILoader: MapsAPILoader,) { 
+    private mapsAPILoader: MapsAPILoader) { 
   }
 
   ngOnInit() {
     this.geoJsonService.getGeoJson().subscribe(geoJson => this.geoJsonObject = geoJson);
-    
+
     this.mapsAPILoader.load().then(() => {
       let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
         types: ['(cities)'],

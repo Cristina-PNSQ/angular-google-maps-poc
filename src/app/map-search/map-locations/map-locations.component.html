@@ -1,0 +1,20 @@
+
+<app-locations (selectedLocation)="onSelectedLocation($event)"></app-locations>
+
+<div *ngIf="selectedSuburb">
+  <agm-map [latitude]="selectedSuburb.latitude" [longitude]="selectedSuburb.longitude" [zoom]="zoom" 
+  [scrollwheel]="true" #gm>
+   
+      <agm-data-layer [geoJson]="geoJsonObject"  [style]="styleFunc" (layerClick)="markerClick($event, infoWindow)">
+        <agm-info-window [disableAutoPan]="true" 
+        [latitude]="infoWindowLat" 
+        [longitude] = "infoWindowLong" 
+        [isOpen]="infoWindowIsOpen"
+         #infoWindow>
+          <p>
+          {{infoWindowText}}
+          </p>
+        </agm-info-window>
+      </agm-data-layer>
+  </agm-map>
+</div>

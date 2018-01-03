@@ -36,6 +36,7 @@ export class SuburbSearchComponent implements OnInit {
                               latitude: position.coords.latitude, 
                               longitude: position.coords.longitude,
                               postalCode:'geolocation',
+                              country:'Australia',
                               isGeolocation: true}; 
       this.onSelected.emit(this.selectedSuburb);
       });

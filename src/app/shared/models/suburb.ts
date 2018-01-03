@@ -5,5 +5,6 @@ export interface Suburb
     postalCode: string
     latitude: number,
     longitude: number,
-    isGeolocation:boolean
+    isGeolocation:boolean,
+    country: string
 }
